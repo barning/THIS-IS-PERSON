@@ -128,11 +128,11 @@ function draw() {
 
   for (let i = 0; i < detections.length; i++) {
     checkDetections(detections[i]);
-    drawResult(detections[i]);
   }
 
   textSize(32);
   textAlign(CENTER);
+  noStroke();
   let backgroundTextWidth = textWidth(prompt) + 10;
   fill(0);
   rect(width / 2 - backgroundTextWidth / 2, height - 64, backgroundTextWidth, 32 + 10);
@@ -144,13 +144,8 @@ function draw() {
   }
 }
 
-function drawResult(object) {
-  drawBoundingBox(object);
-  drawLabel(object);
-}
-
 function drawBoundingBox(object) {
-  stroke(255, 255, 255, 100);
+  stroke("#4caf50");
   strokeJoin(ROUND);
   strokeWeight(3);
   noFill();
@@ -161,19 +156,28 @@ function drawBoundingBox(object) {
 function drawLabel(object) {
   noStroke();
   fill(255);
-  textAlign(LEFT);
+  textAlign(CENTER);
   textStyle(BOLD);
   textSize(18);
 
-  text(object.label.toUpperCase(), object.x + 5, object.y + 18);
+  let backgroundTextWidth = textWidth(object.label.toUpperCase());
+  fill(0);
+  rect(object.x + object.width / 2 - backgroundTextWidth/2, object.y + 2 , backgroundTextWidth+2, 20);
+
+  fill(255);
+
+  text(object.label.toUpperCase(), object.x + object.width/2, object.y + 18);
 }
 
 function checkDetections(object) {
   if (object.label === randomWord.toLowerCase()) {
+    drawBoundingBox(object);
     let oldWord = randomWord;
     let conf = round(object.confidence * 100);
-    prompt = conf + "% SURE, THATS A " + oldWord;
+    prompt = conf + "% SURE, THATS " + oldWord;
     detectedWish = true;
+  } else {
+    drawLabel(object);
   }
 }
 
