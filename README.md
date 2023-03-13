@@ -1,4 +1,4 @@
-# Show-me-Person
+# Show Me Person!
 
 This is a simple web application that uses [ml5.js](https://ml5js.org/) library to detect objects in a video stream from the user's camera. The application randomly picks an object from a pre-defined list of object names and then prompts the user to find that object. Once the object is detected in the video stream, the application draws a bounding box around it and displays a message indicating that the object has been found.
 
