@@ -107,13 +107,12 @@ function setup() {
   video.size(640, 480);
   video.hide();
 
+  randomWord = random(displayNames).toUpperCase();
+  prompt = "I WANT TO SEE " + randomWord;
+
   video.elt.addEventListener('loadeddata', function () {
     if (video.elt.readyState >= 2) {
       detector.detect(video, onDetected);
-
-      randomWord = random(displayNames).toUpperCase();
-
-      prompt = "I WANT TO SEE " + randomWord;
 
       const loadingDiv = document.querySelector('.full-screen');
       loadingDiv.classList.add('hidden');
@@ -160,13 +159,13 @@ function drawLabel(object) {
   textStyle(BOLD);
   textSize(18);
 
-  let backgroundTextWidth = textWidth(object.label.toUpperCase());
+  let backgroundTextWidth = textWidth("THIS IS " + object.label.toUpperCase());
   fill(0);
   rect(object.x + object.width / 2 - backgroundTextWidth/2, object.y + 2 , backgroundTextWidth+2, 20);
 
   fill(255);
 
-  text(object.label.toUpperCase(), object.x + object.width/2, object.y + 18);
+  text("THIS IS " + object.label.toUpperCase(), object.x + object.width/2, object.y + 18);
 }
 
 function checkDetections(object) {
