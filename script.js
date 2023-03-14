@@ -94,6 +94,8 @@ let randomWord = null;
 let prompt = "THINKING";
 let detectedWish = false;
 
+const shareButton = document.querySelector(".share button");
+
 
 function preload() {
   detector = ml5.objectDetector('cocossd');
@@ -101,7 +103,8 @@ function preload() {
 }
 
 function setup() {
-  createCanvas(640, 480);
+  let canvas = createCanvas(640, 480);
+  canvas.parent('canvas-wrapper');
 
   video = createCapture(VIDEO);
   video.size(640, 480);
@@ -171,6 +174,8 @@ function drawLabel(object) {
 function checkDetections(object) {
   if (object.label === randomWord.toLowerCase()) {
     drawBoundingBox(object);
+    showShare();
+
     let oldWord = randomWord;
     let conf = round(object.confidence * 100);
     prompt = conf + "% SURE, THATS " + oldWord;
@@ -189,4 +194,15 @@ function onDetected(error, results) {
 
   detector.detect(video, onDetected);
 }
+
+function showShare() {
+  console.log(shareButton);
+  shareButton.parentNode.classList.remove("hidden");
+  shareButton.addEventListener("click", shareImage, false);
+}
+
+function shareImage() {
+  saveCanvas(canvas, 'THIS IS ' + randomWord.toUpperCase(), 'jpg');
+}
+
 
