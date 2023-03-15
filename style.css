@@ -8,6 +8,7 @@ body {
   flex-direction: column;
   align-items: center;
   margin-top: 15vh;
+  gap: 1em;
 }
 
 /* Styles for full-screen div */
@@ -32,4 +33,20 @@ body {
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.5s ease-in-out;
+}
+
+button {
+  background-color: black;
+  border: none;
+  color: white;
+  font-size: 2em;
+  padding: .25em .5em;
+  text-transform: uppercase;
+  font-weight: bold;
+
+  transition: margin-top 0.1s ease-in-out;
+}
+
+button:active, button:focus {
+  margin-top: 1px;
 }

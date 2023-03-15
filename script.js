@@ -155,31 +155,45 @@ function drawBoundingBox(object) {
   rect(object.x, object.y, object.width, object.height);
 }
 
-function drawLabel(object) {
+function drawLabel(object, notConvinced) {
+  let message = "";
+
+  if (notConvinced) {
+    message = "IS THIS " + object.label.toUpperCase() + "?";
+  } else {
+    message = "THIS IS " + object.label.toUpperCase();
+  }
+
   noStroke();
   fill(255);
   textAlign(CENTER);
   textStyle(BOLD);
   textSize(18);
 
-  let backgroundTextWidth = textWidth("THIS IS " + object.label.toUpperCase());
+  let backgroundTextWidth = textWidth(message);
   fill(0);
   rect(object.x + object.width / 2 - backgroundTextWidth/2, object.y + 2 , backgroundTextWidth+2, 20);
 
   fill(255);
-
-  text("THIS IS " + object.label.toUpperCase(), object.x + object.width/2, object.y + 18);
+  text(message, object.x + object.width/2, object.y + 18);
 }
 
 function checkDetections(object) {
-  if (object.label === randomWord.toLowerCase()) {
-    drawBoundingBox(object);
-    showShare();
+  let confidence = float(object.confidence);
 
-    let oldWord = randomWord;
-    let conf = round(object.confidence * 100);
-    prompt = conf + "% SURE, THATS " + oldWord;
-    detectedWish = true;
+  if (object.label === randomWord.toLowerCase()) {
+
+    if (confidence < 0.7) {
+      drawLabel(object, true);
+    } else {
+      drawBoundingBox(object);
+      showShare();
+
+      let oldWord = randomWord;
+      let conf = round(confidence * 100);
+      prompt = conf + "% SURE, THATS " + oldWord;
+      detectedWish = true;
+    }
   } else {
     drawLabel(object);
   }
