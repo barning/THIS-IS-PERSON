@@ -5,15 +5,27 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="full-screen">LOADING CONSCIOUSNESS</div>
-  
-  <div id="canvas-wrapper"></div>
+  <header>
+    <h1>THIS IS PERSON</h1>
+    <nav>
+      <ul>
+        <li>How to play</li>
+        <li>Credits</li>
+        <li>Statistics</li>
+        <li>Imprint</li>
+      </ul>
+    </nav>
+  </header>  
+  <div id="canvas-wrapper" class="loading">
+    <button class="load">Load AI</button>
+    <div class="loading-screen hidden">LOADING CONSCIOUSNESS</div>
+  </div>
   
   <div class="share hidden">
     <button>Download Image</button>
   </div>
 </body>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.min.js"></script>
-<script src="https://unpkg.com/ml5@0.12.2/dist/ml5.min.js"></script>
-<script src="script.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.min.js"></script>
+  <script src="https://unpkg.com/ml5@0.12.2/dist/ml5.min.js"></script>
+  <script src="script.js"></script>
 </html>

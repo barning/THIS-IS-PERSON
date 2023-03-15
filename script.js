@@ -94,129 +94,139 @@ let randomWord = null;
 let prompt = "THINKING";
 let detectedWish = false;
 
+const loadingScreen = document.querySelector(".loading-screen");
 const shareButton = document.querySelector(".share button");
+const loadButton = document.querySelector(".load");
 
+let sketch = function (s) {
 
-function preload() {
-  detector = ml5.objectDetector('cocossd');
-  console.log('detector object is loaded');
-}
+  s.preload = function() {
+    loadButton.classList.add("hidden");
+    loadingScreen.classList.remove("hidden");
+    detector = ml5.objectDetector('cocossd');
+    console.log('detector object is loaded');
+  };
 
-function setup() {
-  let canvas = createCanvas(640, 480);
-  canvas.parent('canvas-wrapper');
+  s.setup = function () {
+    let canvas = s.createCanvas(640, 480);
+    canvas.parent('canvas-wrapper');
 
-  video = createCapture(VIDEO);
-  video.size(640, 480);
-  video.hide();
+    video = s.createCapture(s.VIDEO);
+    video.size(640, 480);
+    video.hide();
 
-  randomWord = random(displayNames).toUpperCase();
-  prompt = "I WANT TO SEE " + randomWord;
+    randomWord = s.random(displayNames).toUpperCase();
+    prompt = "I WANT TO SEE " + randomWord;
 
-  video.elt.addEventListener('loadeddata', function () {
-    if (video.elt.readyState >= 2) {
-      detector.detect(video, onDetected);
+    video.elt.addEventListener('loadeddata', function () {
+      if (video.elt.readyState >= 2) {
+        detector.detect(video, onDetected);
+      }
+    });
+  };
 
-      const loadingDiv = document.querySelector('.full-screen');
-      loadingDiv.classList.add('hidden');
+  s.draw = function () {
+    if (!video) return;
+
+    s.image(video, 0, 0);
+
+    for (let i = 0; i < detections.length; i++) {
+      checkDetections(detections[i]);
     }
-  });
-}
 
-function draw() {
-  if (!video) return;
+    s.textSize(32);
+    s.textAlign(s.CENTER);
+    s.noStroke();
+    let backgroundTextWidth = s.textWidth(prompt) + 10;
+    s.fill(0);
+    s.rect(s.width / 2 - backgroundTextWidth / 2, s.height - 64, backgroundTextWidth, 32 + 10);
+    s.fill(255);
+    s.text(prompt, s.width / 2, s.height - 30);
 
-  image(video, 0, 0);
+    if (detectedWish) {
+      s.noLoop();
+    }
+  };
 
-  for (let i = 0; i < detections.length; i++) {
-    checkDetections(detections[i]);
-  }
+  const drawBoundingBox = function(object) {
+    s.stroke("#4caf50");
+    s.strokeJoin(s.ROUND);
+    s.strokeWeight(3);
+    s.noFill();
 
-  textSize(32);
-  textAlign(CENTER);
-  noStroke();
-  let backgroundTextWidth = textWidth(prompt) + 10;
-  fill(0);
-  rect(width / 2 - backgroundTextWidth / 2, height - 64, backgroundTextWidth, 32 + 10);
-  fill(255);
-  text(prompt, width / 2, height - 30);
+    s.rect(object.x, object.y, object.width, object.height);
+  };
 
-  if (detectedWish) {
-    noLoop();
-  }
-}
+  const drawLabel = function(object, notConvinced) {
+    let message = "";
 
-function drawBoundingBox(object) {
-  stroke("#4caf50");
-  strokeJoin(ROUND);
-  strokeWeight(3);
-  noFill();
-
-  rect(object.x, object.y, object.width, object.height);
-}
-
-function drawLabel(object, notConvinced) {
-  let message = "";
-
-  if (notConvinced) {
-    message = "IS THIS " + object.label.toUpperCase() + "?";
-  } else {
-    message = "THIS IS " + object.label.toUpperCase();
-  }
-
-  noStroke();
-  fill(255);
-  textAlign(CENTER);
-  textStyle(BOLD);
-  textSize(18);
-
-  let backgroundTextWidth = textWidth(message);
-  fill(0);
-  rect(object.x + object.width / 2 - backgroundTextWidth/2, object.y + 2 , backgroundTextWidth+2, 20);
-
-  fill(255);
-  text(message, object.x + object.width/2, object.y + 18);
-}
-
-function checkDetections(object) {
-  let confidence = float(object.confidence);
-
-  if (object.label === randomWord.toLowerCase()) {
-
-    if (confidence < 0.7) {
-      drawLabel(object, true);
+    if (notConvinced) {
+      message = "IS THIS " + object.label.toUpperCase() + "?";
     } else {
-      drawBoundingBox(object);
-      showShare();
-
-      let oldWord = randomWord;
-      let conf = round(confidence * 100);
-      prompt = conf + "% SURE, THATS " + oldWord;
-      detectedWish = true;
+      message = "THIS IS " + object.label.toUpperCase();
     }
-  } else {
-    drawLabel(object);
-  }
+
+    s.noStroke();
+    s.fill(255);
+    s.textAlign(s.CENTER);
+    s.textStyle(s.BOLD);
+    s.textSize(18);
+
+    let backgroundTextWidth = s.textWidth(message);
+    s.fill(0);
+    s.rect(object.x + object.width / 2 - backgroundTextWidth/2, object.y + 2 , backgroundTextWidth+2, 20);
+
+    s.fill(255);
+    s.text(message, object.x + object.width/2, object.y + 18);
+  };
+
+  const checkDetections = function(object) {
+    let confidence = s.float(object.confidence);
+
+    if (object.label === randomWord.toLowerCase()) {
+
+      if (confidence < 0.7) {
+        drawLabel(object, true);
+      } else {
+        drawBoundingBox(object);
+        showShare();
+
+        let oldWord = randomWord;
+        let conf = s.round(confidence * 100);
+        prompt = conf + "% SURE, THATS " + oldWord;
+        detectedWish = true;
+      }
+    } else {
+      drawLabel(object);
+    }
+  };
+
+  // callback function. it is called when object is detected
+  const onDetected = function (error, results) {
+    if (error) {
+      console.error(error);
+    }
+    detections = results;
+
+    detector.detect(video, onDetected);
+    if (!loadingScreen.classList.contains("hidden")) {
+      loadingScreen.classList.add("hidden");
+      document.querySelector('#canvas-wrapper').classList.remove("loading");
+    }
+  };
+
+  const showShare = function() {
+    shareButton.parentNode.classList.remove("hidden");
+    shareButton.addEventListener("click", shareImage, false);
+  };
+
+  const shareImage = function() {
+    s.saveCanvas(canvas, 'THIS IS ' + randomWord.toUpperCase(), 'jpg');
+  };
+};
+
+loadButton.addEventListener("click", loadSketch, false);
+
+function loadSketch(e){
+  let aiSketch = new p5(sketch);
 }
-
-// callback function. it is called when object is detected
-function onDetected(error, results) {
-  if (error) {
-    console.error(error);
-  }
-  detections = results;
-
-  detector.detect(video, onDetected);
-}
-
-function showShare() {
-  console.log(shareButton);
-  shareButton.parentNode.classList.remove("hidden");
-  shareButton.addEventListener("click", shareImage, false);
-}
-
-function shareImage() {
-  saveCanvas(canvas, 'THIS IS ' + randomWord.toUpperCase(), 'jpg');
-}
-
-
