@@ -1,6 +1,6 @@
 # Show Me Person!
 
-This is a simple web application that uses [ml5.js](https://ml5js.org/) library to detect objects in a video stream from the user's camera. The application randomly picks an object from a pre-defined list of object names and then prompts the user to find that object. Once the object is detected in the video stream, the application draws a bounding box around it and displays a message indicating that the object has been found.
+This is a web application that uses [ml5.js](https://ml5js.org/), [p5js](https://p5js.org/) and [COCO-SSD](https://github.com/tensorflow/tfjs-models/tree/master/coco-ssd) model to detect objects in real-time through the webcam of the user. The app randomly selects an object and the user's goal is to make the application detect this specific object.
 
 How to use the application
 --------------------------
