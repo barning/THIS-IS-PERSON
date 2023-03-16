@@ -98,9 +98,34 @@ const loadingScreen = document.querySelector(".loading-screen");
 const shareButton = document.querySelector(".share button");
 const loadButton = document.querySelector(".load");
 
-let sketch = function (s) {
+const dialogButtons = document.querySelectorAll("[data-open]");
+const howtoDialog = document.querySelector("#howto");
+const statisticsDialog = document.querySelector("#statistics");
+const creditsDialog = document.querySelector("#credits");
 
-  s.preload = function() {
+dialogButtons.forEach(function(button) {
+  button.addEventListener('click', function(e) {
+    e.preventDefault();
+    const classList =  this.classList;
+    switch (true) {
+      case classList.contains("Howto"):
+        howtoDialog.showModal();
+        break;
+      case classList.contains("Credits"):
+        creditsDialog.showModal();
+        break;
+      case classList.contains("Statistics"):
+        statisticsDialog.showModal();
+        break;
+      default:
+        console.log(classList.contains("Howto"));
+    }
+  })
+})
+
+let sketch = (s) => {
+
+  s.preload = function () {
     loadButton.classList.add("hidden");
     loadingScreen.classList.remove("hidden");
     detector = ml5.objectDetector('cocossd');
@@ -126,7 +151,8 @@ let sketch = function (s) {
   };
 
   s.draw = function () {
-    if (!video) return;
+    if (!video)
+      return;
 
     s.image(video, 0, 0);
 
@@ -148,7 +174,15 @@ let sketch = function (s) {
     }
   };
 
-  const drawBoundingBox = function(object) {
+  s.windowResized = function () {
+    if (s.windowWidth < 640) {
+      s.resizeCanvas(s.windowWidth, 480);
+    } else {
+      s.resizeCanvas(640, 480);
+    }
+  };
+
+  const drawBoundingBox = function (object) {
     s.stroke("#4caf50");
     s.strokeJoin(s.ROUND);
     s.strokeWeight(3);
@@ -157,7 +191,7 @@ let sketch = function (s) {
     s.rect(object.x, object.y, object.width, object.height);
   };
 
-  const drawLabel = function(object, notConvinced) {
+  const drawLabel = function (object, notConvinced) {
     let message = "";
 
     if (notConvinced) {
@@ -174,13 +208,13 @@ let sketch = function (s) {
 
     let backgroundTextWidth = s.textWidth(message);
     s.fill(0);
-    s.rect(object.x + object.width / 2 - backgroundTextWidth/2, object.y + 2 , backgroundTextWidth+2, 20);
+    s.rect(object.x + object.width / 2 - backgroundTextWidth / 2, object.y + 2, backgroundTextWidth + 2, 20);
 
     s.fill(255);
-    s.text(message, object.x + object.width/2, object.y + 18);
+    s.text(message, object.x + object.width / 2, object.y + 18);
   };
 
-  const checkDetections = function(object) {
+  const checkDetections = function (object) {
     let confidence = s.float(object.confidence);
 
     if (object.label === randomWord.toLowerCase()) {
@@ -215,12 +249,12 @@ let sketch = function (s) {
     }
   };
 
-  const showShare = function() {
+  const showShare = function () {
     shareButton.parentNode.classList.remove("hidden");
     shareButton.addEventListener("click", shareImage, false);
   };
 
-  const shareImage = function() {
+  const shareImage = function () {
     s.saveCanvas(canvas, 'THIS IS ' + randomWord.toUpperCase(), 'jpg');
   };
 };

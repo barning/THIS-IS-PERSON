@@ -9,10 +9,9 @@
     <h1>THIS IS PERSON</h1>
     <nav>
       <ul>
-        <li>How to play</li>
-        <li>Credits</li>
-        <li>Statistics</li>
-        <li>Imprint</li>
+        <li><a data-open class="Howto" href="">How to play</a></li>
+        <li><a data-open class="Credits" href="">Credits</a></li>
+        <li><a data-open class="Statistics" href="">Statistics</a></li>
       </ul>
     </nav>
   </header>  
@@ -24,6 +23,29 @@
   <div class="share hidden">
     <button>Download Image</button>
   </div>
+
+  <dialog id="howto">
+    <form method="dialog">
+      <button>&#x2715</button>
+    </form>
+    <h2>How To Play</h2>
+    <p>Hello Mortal, this is a really good explainer</p>
+  </dialog>
+
+  <dialog id="credits">
+    <form method="dialog">
+      <button>&#x2715</button>
+    </form>
+    <h2>Credits</h2>
+    <p>Hello Mortal, this is a really good credit</p>
+  </dialog>
+
+  <dialog id="statistics">
+    <form method="dialog">
+      <button>&#x2715</button>
+    </form>
+    <p>Hello Mortal, this is a really good statistic</p>
+  </dialog>
 </body>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.min.js"></script>
   <script src="https://unpkg.com/ml5@0.12.2/dist/ml5.min.js"></script>
