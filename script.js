@@ -94,6 +94,10 @@ let randomWord = null;
 let prompt = "THINKING";
 let detectedWish = false;
 
+const base = new Date();
+let elapsed = 0;
+const timerDIV = document.querySelector(".timer")
+
 const loadingScreen = document.querySelector(".loading-screen");
 const shareButton = document.querySelector(".share button");
 const loadButton = document.querySelector(".load");
@@ -245,6 +249,7 @@ let sketch = (s) => {
     detector.detect(video, onDetected);
     if (!loadingScreen.classList.contains("hidden")) {
       loadingScreen.classList.add("hidden");
+      timer();
       document.querySelector('#canvas-wrapper').classList.remove("loading");
     }
   };
@@ -255,8 +260,18 @@ let sketch = (s) => {
   };
 
   const shareImage = function () {
-    s.saveCanvas(canvas, 'THIS IS ' + randomWord.toUpperCase(), 'jpg');
+    s.saveCanvas(s.canvas, 'THIS IS ' + randomWord.toUpperCase(), 'jpg');
   };
+
+  const timer = function () {
+    const now = new Date();
+    // elapsed time in seconds
+    elapsed = (now - base) / 1000.0;
+    timerDIV.innerHTML = elapsed.toFixed();
+
+    if (!detectedWish) setTimeout(timer, 100);
+  }
+  
 };
 
 loadButton.addEventListener("click", loadSketch, false);
