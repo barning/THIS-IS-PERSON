@@ -142,9 +142,20 @@ let sketch = (s) => {
 
   s.setup = function () {
     let canvas = s.createCanvas(640, 480, s.P2D);
+    let videoConstraints = {
+      video: {
+        mandatory: {
+          minWidth: 640,
+          minHeight: 480
+        },
+        optional: [{ maxFrameRate: 10 }]
+      },
+      audio: false
+    };
+
     canvas.parent('canvas-wrapper');
 
-    video = s.createCapture(s.VIDEO);
+    video = s.createCapture(videoConstraints);
     video.size(640, 480);
     video.hide();
 
@@ -162,7 +173,7 @@ let sketch = (s) => {
   s.draw = function () {
     if (!video) return;
 
-    s.image(video, 0, 0);
+    s.image(video, 0, 0, 640,480);
 
     for (let i = 0; i < detections.length; i++) {
       checkDetections(detections[i]);

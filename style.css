@@ -73,6 +73,10 @@ nav a:hover {
   font-weight: bold;
 }
 
+.loading-screen span {
+  animation: heartbeat 1s infinite;
+}
+
 /* Styles for fading out effect */
 .hidden {
   opacity: 0;
@@ -202,6 +206,34 @@ canvas {
 
   40%, 60% {
     transform: translate3d(4px, 0, 0);
+  }
+}
+
+@keyframes heartbeat
+{
+  0%
+  {
+    transform: scale( .95 );
+  }
+  20%
+  {
+    transform: scale( 1 );
+  }
+  40%
+  {
+    transform: scale( .95 );
+  }
+  60%
+  {
+    transform: scale( 1 );
+  }
+  80%
+  {
+    transform: scale( .95 );
+  }
+  100%
+  {
+    transform: scale( .95 );
   }
 }
 
