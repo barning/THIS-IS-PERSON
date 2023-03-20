@@ -1,19 +1,33 @@
-# Show Me Person!
+THIS IS PERSON
+===================
 
-This is a web application that uses [ml5.js](https://ml5js.org/), [p5js](https://p5js.org/) and [COCO-SSD](https://github.com/tensorflow/tfjs-models/tree/master/coco-ssd) model to detect objects in real-time through the webcam of the user. The app randomly selects an object and the user's goal is to make the application detect this specific object.
+This is a JavaScript application that uses [ml5.js](https://ml5js.org/) and [p5.js](https://p5js.org/) libraries to detect and track objects in real-time video streams. The app utilizes [COCO-SSD](https://github.com/tensorflow/tfjs-models/tree/master/coco-ssd), a pre-trained machine learning model for object detection.
 
-How to use the application
---------------------------
+Features
+--------
 
-1.  Open the application in a web browser that supports the getUserMedia API (e.g. Chrome or Firefox).
-2.  Allow the application to access your camera when prompted.
-3.  The application will randomly select an object from the list of objects and prompt you to find it.
-4.  Move the camera around until the object is detected in the video stream.
-5.  Once the object is detected, a bounding box will be drawn around it and a message will be displayed indicating that the object has been found.
+*   Real-time object detection using the COCO-SSD model
+*   Generates a random object to detect each day
+*   Displays a prompt with the detected object to find
+*   Timer with countdown to complete the task
+*   Share image on social media
+*   Copy link to share with friends
 
-Code Overview
--------------
+Usage
+-----
 
-The code is written in JavaScript and uses the p5.js library for creating and manipulating the canvas element. The ml5.js library is used for object detection using the COCO-SSD model.
+To use the app, simply open `index.html` in a web browser. You will be prompted to allow camera access. After allowing access, the app will start detecting objects in real-time.
 
-The code defines a list of object names to detect, initializes the video stream, and starts the object detection process using ml5.js. Once an object is detected, it is drawn on the canvas with a bounding box, and a message is displayed indicating that the object has been found. The code also uses a callback function to continue object detection after each detection is made.
+When a random object is generated, a prompt will appear at the bottom of the screen with the object to find. The user must find the object within a set amount of time to complete the task. Once the task is completed, a share button will appear to share the image on social media.
+
+There are also dialog buttons to open additional information such as instructions, statistics, and credits.
+
+Installation
+------------
+
+No installation is required. Simply clone or download the repository and open `index.html` in a web browser.
+
+Contributing
+------------
+
+Feel free to contribute to this project. Pull requests are welcome.
