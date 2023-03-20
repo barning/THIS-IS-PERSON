@@ -1,10 +1,13 @@
-<html>
-<head>
-  <title>THIS IS PERSON</title>
-  <meta charset="utf-8" />
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>THIS IS PERSON</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
   <header>
     <h1>THIS IS PERSON</h1>
     <nav>
@@ -16,17 +19,17 @@
     </nav>
   </header>  
   <div id="canvas-wrapper" class="loading">
-    <button class="load">Load AI</button>
+    <button class="load">START AI</button>
     <div class="loading-screen hidden">LOADING CONSCIOUSNESS</div>
   </div>
 
-  <div class="timer__wrapper">
-    I CONVINCED THE AI OVERLOARD IN <span class="timer">0</span> SECONDS WITH <span class="confidence">0</span>% CONFIDENCE
+  <div class="timer__wrapper hidden">
+    ELAPSED TIME <span class="timer">0</span> SECONDS
   </div>
   
   <div class="share hidden">
-    <button>Share with Friends</button>
-    <button>Download Image</button>
+    <button class="share__friends">Share with Friends</button>
+    <button class="share__image">Download Image</button>
   </div>
 
   <dialog id="howto">
@@ -34,7 +37,11 @@
       <button>&#x2715</button>
     </form>
     <h2>How To Play</h2>
-    <p>Hello Mortal, this is a really good explainer</p>
+    <p>The goal of the game is to show a desired object in the camera as quickly as possible. Every day, the object changes.</p>
+
+    <p>The algorithm examines each object seen in the camera and compares it to the requested object. Meanwhile, a timer is set.</p>
+
+    <p>If you hold the matching object in front of the camera and the algorithm is convinced, the game is over and you can brag to your friends about how quickly you finished it.</p>
   </dialog>
 
   <dialog id="credits">
@@ -42,14 +49,17 @@
       <button>&#x2715</button>
     </form>
     <h2>Credits</h2>
-    <p>Hello Mortal, this is a really good credit</p>
+    <p>My name is <a href="https://niklasbarning.de/">Niklas Barning</a>, UX designer and digital tinkerer from Bremen.</p>
+    <p>This game is written in JavaScript and uses the <a href="https://p5js.org/">p5.js</a> library for creating and manipulating the canvas element. The <a href="https://ml5js.org/">ml5.js</a> library is used for object detection using the <a href="https://github.com/tensorflow/tfjs-models/tree/master/coco-ssd">COCO-SSD</a> model.</p>
+    <p>Please checkout the <a href="https://github.com/barning/THIS-IS-PERSON">GitHub Repo</a> for this project.</p>
   </dialog>
 
   <dialog id="statistics">
     <form method="dialog">
       <button>&#x2715</button>
     </form>
-    <p>Hello Mortal, this is a really good statistic</p>
+    <h2>Statistics</h2>
+    <p>Coming soon!</p>
   </dialog>
 </body>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.min.js"></script>

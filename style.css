@@ -30,22 +30,7 @@ header {
   align-items: center;
 
   border-bottom: 1px solid var(--secondary);
-}
-
-@media only screen and (max-width: 640px) {
-  header {
-    flex-direction: column;
-  }
-
-  h1 {
-    margin-bottom: .5rem;
-  }
-
-  nav {
-    margin-top: 1rem;
-    margin-bottom: 1.5rem;
-  }
-}   
+} 
 
 nav ul {
   display: flex;
@@ -142,12 +127,26 @@ nav a:hover {
   background-color: var(--highlight);
 }
 
+.share button:hover {
+  animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+}
+
+.share button:active {
+  transform: translateY(4px);
+}
+
 .timer__wrapper {
   text-align: center;
   max-width: var(--size);
   font-size: 2em;
   text-transform: uppercase;
   font-weight: bold;
+}
+
+dialog {
+  max-width: 500px;
+  width: 100%;
+  min-height: 200px;
 }
 
 dialog form {
@@ -160,6 +159,10 @@ dialog button {
   font-weight: bold;
   border: none;
   cursor: pointer;
+}
+
+dialog p {
+  hyphens: auto;
 }
 
 #canvas-wrapper {
@@ -201,3 +204,23 @@ canvas {
     transform: translate3d(4px, 0, 0);
   }
 }
+
+@media only screen and (max-width: 640px) {
+  header {
+    flex-direction: column;
+  }
+
+  h1 {
+    margin-bottom: .5rem;
+    font-size: 1rem;
+  }
+
+  nav {
+    margin-top: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  dialog {
+    width: 80vw;
+  }
+}  

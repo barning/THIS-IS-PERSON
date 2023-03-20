@@ -87,6 +87,8 @@ const displayNames = [
   'toothbrush'
 ];
 
+let worfOfToday = null;
+
 let video = null; 
 let detector = null; 
 let detections = []; 
@@ -94,13 +96,15 @@ let randomWord = null;
 let prompt = "THINKING";
 let detectedWish = false;
 
-const base = new Date();
+let base = null;
 let elapsed = 0;
 const timerDIV = document.querySelector(".timer")
 
 const loadingScreen = document.querySelector(".loading-screen");
-const shareButton = document.querySelector(".share button");
+const shareButton = document.querySelector(".share__image");
+const copyButton = document.querySelector(".share__friends");
 const loadButton = document.querySelector(".load");
+const timerWrapper = document.querySelector(".timer__wrapper");
 
 const dialogButtons = document.querySelectorAll("[data-open]");
 const howtoDialog = document.querySelector("#howto");
@@ -137,26 +141,26 @@ let sketch = (s) => {
   };
 
   s.setup = function () {
-    let canvas = s.createCanvas(640, 480);
+    let canvas = s.createCanvas(640, 480, s.P2D);
     canvas.parent('canvas-wrapper');
 
     video = s.createCapture(s.VIDEO);
     video.size(640, 480);
     video.hide();
 
-    randomWord = s.random(displayNames).toUpperCase();
+    randomWord = worfOfToday.toUpperCase();
     prompt = "I WANT TO SEE " + randomWord;
 
     video.elt.addEventListener('loadeddata', function () {
       if (video.elt.readyState >= 2) {
         detector.detect(video, onDetected);
+        timerWrapper.classList.remove("hidden");
       }
     });
   };
 
   s.draw = function () {
-    if (!video)
-      return;
+    if (!video) return;
 
     s.image(video, 0, 0);
 
@@ -171,6 +175,7 @@ let sketch = (s) => {
     s.fill(0);
     s.rect(s.width / 2 - backgroundTextWidth / 2, s.height - 64, backgroundTextWidth, 32 + 10);
     s.fill(255);
+    s.textStyle(s.BOLD);
     s.text(prompt, s.width / 2, s.height - 30);
 
     if (detectedWish) {
@@ -232,6 +237,10 @@ let sketch = (s) => {
         let oldWord = randomWord;
         let conf = s.round(confidence * 100);
         prompt = conf + "% SURE, THATS " + oldWord;
+
+        timerWrapper.innerHTML = "FOUND TODAYS WORD IN " + elapsed.toFixed() + " Seconds";
+        s.storeItem(randomWord, elapsed);
+
         detectedWish = true;
       }
     } else {
@@ -249,7 +258,12 @@ let sketch = (s) => {
     detector.detect(video, onDetected);
     if (!loadingScreen.classList.contains("hidden")) {
       loadingScreen.classList.add("hidden");
-      timer();
+
+      if (video.loadedmetadata) {
+        base = new Date()
+        timer();
+      }
+
       document.querySelector('#canvas-wrapper').classList.remove("loading");
     }
   };
@@ -257,10 +271,17 @@ let sketch = (s) => {
   const showShare = function () {
     shareButton.parentNode.classList.remove("hidden");
     shareButton.addEventListener("click", shareImage, false);
+    copyButton.addEventListener("click", copyText, false);
   };
 
   const shareImage = function () {
     s.saveCanvas(s.canvas, 'THIS IS ' + randomWord.toUpperCase(), 'jpg');
+  };
+
+  const copyText = function () {
+    const text =  "FOUND TODAYS THISISPERSON.COM WORD IN " + elapsed.toFixed() + " SECONDS";
+    navigator.clipboard.writeText(text);
+    copyButton.textContent = "COPIED TO CLIPBOARD";
   };
 
   const timer = function () {
@@ -276,6 +297,23 @@ let sketch = (s) => {
 
 loadButton.addEventListener("click", loadSketch, false);
 
+function getToday(days) {
+  const release = new Date('March 20, 2023 00:00:00');
+  const today = new Date();
+
+  // One day in milliseconds
+  const oneDay = 1000 * 60 * 60 * 24;
+
+  // Calculating the time difference between two dates
+  const diffInTime = today.getTime() - release.getTime();
+
+  // Calculating the no. of days between two dates
+  const diffInDays = Math.round(diffInTime / oneDay);
+
+  return diffInDays - 1;
+}
+
 function loadSketch(e){
+  worfOfToday = displayNames[getToday()];
   let aiSketch = new p5(sketch);
 }
