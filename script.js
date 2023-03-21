@@ -147,19 +147,14 @@ let sketch = (s) => {
 
     canvas.parent('canvas-wrapper');
 
-    let videoConstraints = {
+    video = s.createCapture({
       video: {
-        mandatory: {
-          minWidth: 640,
-          minHeight: 480
-        },
-        optional: [{ maxFrameRate: 10 }]
+        width: { min: 320, ideal: 640, max: 640 },
+        height: { min: 240, ideal: 480, max: 480 }
       },
       audio: false
-    };
+    })
 
-    video = s.createCapture(videoConstraints);
-    video.size(640, 480);
     video.hide();
 
     randomWord = wordOfToday.toUpperCase();
@@ -176,7 +171,7 @@ let sketch = (s) => {
   s.draw = function () {
     if (!video) return;
 
-    s.image(video, 0, 0);
+    s.image(video.get(), 0, 0, s.width, s.height);
 
     for (let i = 0; i < detections.length; i++) {
       checkDetections(detections[i]);
