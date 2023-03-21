@@ -87,7 +87,7 @@ const displayNames = [
   'toothbrush'
 ];
 
-let worfOfToday = null;
+let wordOfToday = null;
 
 let video = null; 
 let detector = null; 
@@ -143,25 +143,14 @@ let sketch = (s) => {
   };
 
   s.setup = function () {
-    let canvas = s.createCanvas(640, 480, s.P2D);
-    let videoConstraints = {
-      video: {
-        mandatory: {
-          minWidth: 640,
-          minHeight: 480
-        },
-        optional: [{ maxFrameRate: 10 }]
-      },
-      audio: false
-    };
+    let canvas = s.createCanvas(640, 480);
 
     canvas.parent('canvas-wrapper');
 
-    video = s.createCapture(videoConstraints);
-    video.size(640, 480);
+    video = s.createCapture(s.VIDEO);
     video.hide();
 
-    randomWord = worfOfToday.toUpperCase();
+    randomWord = wordOfToday.toUpperCase();
     prompt = "I WANT TO SEE " + randomWord;
 
     video.elt.addEventListener('loadeddata', function () {
@@ -175,7 +164,7 @@ let sketch = (s) => {
   s.draw = function () {
     if (!video) return;
 
-    s.image(video, 0, 0, 640,480);
+    s.image(video, 0, 0);
 
     for (let i = 0; i < detections.length; i++) {
       checkDetections(detections[i]);
@@ -193,14 +182,6 @@ let sketch = (s) => {
 
     if (detectedWish) {
       s.noLoop();
-    }
-  };
-
-  s.windowResized = function () {
-    if (s.windowWidth < 640) {
-      s.resizeCanvas(s.windowWidth, 480);
-    } else {
-      s.resizeCanvas(640, 480);
     }
   };
 
@@ -314,19 +295,10 @@ function getToday(days) {
   const release = new Date('March 20, 2023 00:00:00');
   const today = new Date();
 
-  // One day in milliseconds
-  const oneDay = 1000 * 60 * 60 * 24;
-
-  // Calculating the time difference between two dates
-  const diffInTime = today.getTime() - release.getTime();
-
-  // Calculating the no. of days between two dates
-  const diffInDays = Math.round(diffInTime / oneDay);
-
-  return diffInDays;
+  return Math.floor((Date.UTC(today.getFullYear(), today.getMonth(), today.getDate()) - Date.UTC(release.getFullYear(), release.getMonth(), release.getDate()) ) /(1000 * 60 * 60 * 24));
 }
 
 function loadSketch(e){
-  worfOfToday = displayNames[getToday()];
-  let aiSketch = new p5(sketch);
+  wordOfToday = displayNames[getToday()];
+  new p5(sketch);
 }
