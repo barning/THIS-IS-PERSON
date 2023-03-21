@@ -147,7 +147,19 @@ let sketch = (s) => {
 
     canvas.parent('canvas-wrapper');
 
-    video = s.createCapture(s.VIDEO);
+    let videoConstraints = {
+      video: {
+        mandatory: {
+          minWidth: 640,
+          minHeight: 480
+        },
+        optional: [{ maxFrameRate: 10 }]
+      },
+      audio: false
+    };
+
+    video = s.createCapture(videoConstraints);
+    video.size(640, 480);
     video.hide();
 
     randomWord = wordOfToday.toUpperCase();

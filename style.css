@@ -75,6 +75,7 @@ nav a:hover {
 
 .loading-screen span {
   animation: heartbeat 1s infinite;
+  text-align: center;
 }
 
 /* Styles for fading out effect */
