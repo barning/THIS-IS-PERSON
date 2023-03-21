@@ -111,6 +111,8 @@ const howtoDialog = document.querySelector("#howto");
 const statisticsDialog = document.querySelector("#statistics");
 const creditsDialog = document.querySelector("#credits");
 
+let url = window.location.href;
+
 dialogButtons.forEach(function(button) {
   button.addEventListener('click', function(e) {
     e.preventDefault();
@@ -290,7 +292,7 @@ let sketch = (s) => {
   };
 
   const copyText = function () {
-    const text =  "FOUND TODAYS THISISPERSON.COM WORD IN " + elapsed.toFixed() + " SECONDS";
+    const text =  "FOUND TODAYS "+ url +" WORD IN " + elapsed.toFixed() + " SECONDS";
     navigator.clipboard.writeText(text);
     copyButton.textContent = "COPIED TO CLIPBOARD";
   };
