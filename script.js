@@ -321,7 +321,7 @@ function getToday(days) {
   // Calculating the no. of days between two dates
   const diffInDays = Math.round(diffInTime / oneDay);
 
-  return diffInDays - 1;
+  return diffInDays;
 }
 
 function loadSketch(e){
