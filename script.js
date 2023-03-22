@@ -163,6 +163,8 @@ let sketch = (s) => {
     video.elt.addEventListener('loadeddata', function () {
       if (video.elt.readyState >= 2) {
         video.size(s.width, s.AUTO);
+        s.resizeCanvas(640, video.get().height);
+
         detector.detect(video, onDetected);
         timerWrapper.classList.remove("hidden");
       }
