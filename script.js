@@ -162,6 +162,7 @@ let sketch = (s) => {
 
     video.elt.addEventListener('loadeddata', function () {
       if (video.elt.readyState >= 2) {
+        video.size(s.width, s.AUTO);
         detector.detect(video, onDetected);
         timerWrapper.classList.remove("hidden");
       }
@@ -171,7 +172,7 @@ let sketch = (s) => {
   s.draw = function () {
     if (!video) return;
 
-    s.image(video.get(), 0, 0, s.width, s.height);
+    s.image(video.get(), 0, 0);
 
     for (let i = 0; i < detections.length; i++) {
       checkDetections(detections[i]);
