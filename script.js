@@ -126,6 +126,7 @@ dialogButtons.forEach(function(button) {
         break;
       case classList.contains("Statistics"):
         statisticsDialog.showModal();
+        calculateStatistics();
         break;
       default:
         console.log(classList.contains("Howto"));
@@ -158,7 +159,7 @@ let sketch = (s) => {
     video.hide();
 
     randomWord = wordOfToday.toUpperCase();
-    prompt = "I WANT TO SEE " + randomWord;
+    prompt = `I WANT TO SEE ${randomWord}`;
 
     video.elt.addEventListener('loadeddata', function () {
       if (video.elt.readyState >= 2) {
@@ -208,9 +209,9 @@ let sketch = (s) => {
     let message = "";
 
     if (notConvinced) {
-      message = "IS THIS " + object.label.toUpperCase() + "?";
+      message = `IS THIS ${object.label.toUpperCase()}?`;
     } else {
-      message = "THIS IS " + object.label.toUpperCase();
+      message = `THIS IS ${object.label.toUpperCase()}`;
     }
 
     s.noStroke();
@@ -240,9 +241,9 @@ let sketch = (s) => {
 
         let oldWord = randomWord;
         let conf = s.round(confidence * 100);
-        prompt = conf + "% SURE, THATS " + oldWord;
+        prompt = `${conf}% SURE, THATS ${oldWord}`;
 
-        timerWrapper.innerHTML = "FOUND TODAYS WORD IN " + elapsed.toFixed() + " Seconds";
+        timerWrapper.innerHTML = `FOUND TODAYS WORD IN ${elapsed.toFixed()} Seconds`;
         s.storeItem(randomWord, elapsed);
 
         detectedWish = true;
@@ -279,11 +280,11 @@ let sketch = (s) => {
   };
 
   const shareImage = function () {
-    s.saveCanvas(s.canvas, 'THIS IS ' + randomWord.toUpperCase(), 'jpg');
+    s.saveCanvas(s.canvas, `THIS IS ${randomWord.toUpperCase()}`, 'jpg');
   };
 
   const copyText = function () {
-    const text =  "FOUND TODAYS "+ url +" WORD IN " + elapsed.toFixed() + " SECONDS";
+    const text =  `FOUND TODAYS ${url} WORD IN ${elapsed.toFixed()} SECONDS`;
     navigator.clipboard.writeText(text);
     copyButton.textContent = "COPIED TO CLIPBOARD";
   };
@@ -296,10 +297,24 @@ let sketch = (s) => {
 
     if (!detectedWish) setTimeout(timer, 100);
   }
-  
 };
 
 loadButton.addEventListener("click", loadSketch, false);
+
+function calculateStatistics() {
+  const statisticsList = statisticsDialog.querySelector(".statistics__list");
+
+  displayNames.forEach(name => {
+
+    const stat = localStorage.getItem(name.toUpperCase());
+
+    if (stat) {
+      const li = document.createElement('li');
+      li.innerText = `${name.toUpperCase()} found in ${stat} Seconds`
+      statisticsList.appendChild(li); 
+    }
+  });
+}
 
 function getToday(days) {
   const release = new Date('March 20, 2023 00:00:00');
