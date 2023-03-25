@@ -319,8 +319,9 @@ function calculateStatistics() {
 function getToday(days) {
   const release = new Date('March 20, 2023 00:00:00');
   const today = new Date();
+  const daysSinceRelease = Math.floor((Date.UTC(today.getFullYear(), today.getMonth(), today.getDate()) - Date.UTC(release.getFullYear(), release.getMonth(), release.getDate()) ) /(1000 * 60 * 60 * 24));
 
-  return Math.floor((Date.UTC(today.getFullYear(), today.getMonth(), today.getDate()) - Date.UTC(release.getFullYear(), release.getMonth(), release.getDate()) ) /(1000 * 60 * 60 * 24));
+  return daysSinceRelease % displayNames.length;
 }
 
 function loadSketch(e){
