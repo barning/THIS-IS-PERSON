@@ -36,6 +36,7 @@ export class GameController {
         })
       : null;
 
+    this.p5Instance = null;
     this.startGame = this.startGame.bind(this);
   }
 
@@ -77,6 +78,11 @@ export class GameController {
       return;
     }
 
+    if (this.p5Instance) {
+      this.p5Instance.remove();
+      this.p5Instance = null;
+    }
+
     this.timer.reset();
     this.shareControls.hide();
     this.canvasWrapper.classList.add('loading');
@@ -94,6 +100,6 @@ export class GameController {
       url: this.url,
     });
 
-    new p5(sketchFactory);
+    this.p5Instance = new p5(sketchFactory);
   }
 }
