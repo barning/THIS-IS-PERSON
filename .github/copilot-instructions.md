@@ -25,7 +25,7 @@ THIS IS PERSON is a JavaScript web application that challenges users to find spe
 ## Key Components
 
 ### script.js
-- `displayNames`: Array of 88 COCO-SSD detectable objects
+- `displayNames`: Array of 85 COCO-SSD detectable objects
 - `sketch`: p5.js sketch object containing setup, draw, and detection logic
 - `getToday()`: Calculates daily object rotation based on release date
 - `onDetected()`: Callback for ML5 object detection results
@@ -89,7 +89,7 @@ THIS IS PERSON is a JavaScript web application that challenges users to find spe
 ## Common Tasks
 
 ### Adding New Objects
-Modify the `displayNames` array in `script.js` - limited to COCO-SSD's 80 object classes.
+Modify the `displayNames` array in `script.js`. Note: The array currently contains 85 objects from the COCO-SSD model's detectable classes.
 
 ### Modifying Detection Logic
 Edit `checkDetections()` function in `script.js`. Current confidence threshold is 0.7.
