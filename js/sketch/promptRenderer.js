@@ -4,6 +4,9 @@ export function createPromptRenderer(p5Instance) {
   let lastMeasuredText = null;
 
   function measureWidth(value) {
+    if (!p5Instance._renderer) {
+      return 0;
+    }
     p5Instance.push();
     p5Instance.textSize(32);
     p5Instance.textStyle(p5Instance.BOLD);
@@ -14,15 +17,16 @@ export function createPromptRenderer(p5Instance) {
 
   function setText(newText) {
     text = newText;
-    if (newText !== lastMeasuredText) {
-      cachedWidth = measureWidth(newText);
-      lastMeasuredText = newText;
-    }
+    lastMeasuredText = null; // Mark for re-measurement on next draw
   }
 
-  setText(text);
-
   function draw() {
+    // Measure width on first draw if needed
+    if (text !== lastMeasuredText) {
+      cachedWidth = measureWidth(text);
+      lastMeasuredText = text;
+    }
+
     p5Instance.push();
     p5Instance.textSize(32);
     p5Instance.textAlign(p5Instance.CENTER);
